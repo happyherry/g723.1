@@ -52,14 +52,13 @@ extern  Word32 L_mult(Word16 var1, Word16 var2);  /* Long mult,           1 */
 extern  void Calc_Exc_Rand(Word16 cur_gain, Word16 *PrevExc, Word16 *DataExc,Word16 *nRandom, LINEDEF *Line);
 extern  void  Lsp_Int( Word16 *QntLpc, Word16 *CurrLsp, Word16 *PrevLsp );
 extern  Word16 add(Word16 var1, Word16 var2);     /* Short add,           1 */
-extern  Word32 L_deposit_l(Word16 var1);       /* 16 bit var1 -> LSB,     2 */
+//extern  Word32 L_deposit_l(Word16 var1);       /* 16 bit var1 -> LSB,     2 */
 extern  Word32 L_shl(Word32 L_var1, Word16 var2); /* Long shift left,     2 */
 extern  Word16 norm_l(Word32 L_var1);           /* Long norm,            30 */
 extern  Word16 extract_l(Word32 L_var1);          /* Extract low,         1 */
 extern  Word32 L_shr(Word32 L_var1, Word16 var2); /* Long shift right,    2 */
 extern  Word32 L_mac(Word32 L_var3, Word16 var1, Word16 var2); /* Mac,    1 */
 extern  Word16 round_(Word32 L_var1);              /* Round,               1 */
-extern  Word32 L_shr(Word32 L_var1, Word16 var2); /* Long shift right,    2 */
 extern  Word16 mult_r(Word16 var1, Word16 var2);  /* Mult with round,     2 */
 
 /* Declaration of local functions */
@@ -428,7 +427,7 @@ void CalcRC(Word16 *Coeff, Word16 *RC, Word16 *ShRC)
     sh1 = norm_l(L_acc) - (Word16)2;    /* 1 bit because of x2 in RC[i], i> 0*/
                                 /* & 1 bit margin for Itakura distance */
     L_acc = L_shl(L_acc, sh1); /* shift right if < 0 */
-    RC[0] = round(L_acc);
+    RC[0] = round_(L_acc);
 
     for(i=1; i<=LpcOrder; i++) {
         L_acc = L_mult( (Word16) 0xE000, Coeff[i-1]);   /* - (1 << Lpc_justif.) */
@@ -436,7 +435,7 @@ void CalcRC(Word16 *Coeff, Word16 *RC, Word16 *ShRC)
             L_acc = L_mac(L_acc, Coeff[j], Coeff[j+i]);
         }
         L_acc = L_shl(L_acc, sh1);
-        RC[i] = round(L_acc);
+        RC[i] = round_(L_acc);
     }
     *ShRC = sh1;
     return;

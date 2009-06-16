@@ -250,7 +250,7 @@ void  Rem_Dc( Word16 *Dpnt )
             Acc1 = L_mls( CodStat.HpfPdl, (Word16) 0x7f00 ) ;
             Acc0 = L_add( Acc0, Acc1 ) ;
             CodStat.HpfPdl = Acc0 ;
-            Dpnt[i] = round(Acc0) ;
+            Dpnt[i] = round_(Acc0) ;
         }
     }
     else {
@@ -937,13 +937,13 @@ void  Scale( Word16 *Tv, Word32 Sen )
         Acc0 = L_deposit_h( DecStat.Gain ) ;
         Acc0 = L_msu( Acc0, DecStat.Gain, (Word16) 0x0800 ) ;
         Acc0 = L_mac( Acc0, SfGain, (Word16) 0x0800 ) ;
-        DecStat.Gain = round( Acc0 ) ;
+        DecStat.Gain = round_( Acc0 ) ;
 
         Exp = add( DecStat.Gain, shr( DecStat.Gain, (Word16) 4) ) ;
 
         Acc0 = L_mult( Tv[i], Exp ) ;
         Acc0 = L_shl( Acc0, (Word16) 4 ) ;
-        Tv[i] = round( Acc0 ) ;
+        Tv[i] = round_( Acc0 ) ;
     }
 
     return;

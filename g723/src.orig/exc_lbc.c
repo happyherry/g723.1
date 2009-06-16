@@ -216,7 +216,7 @@ Word16   Estim_Pitch( Word16 *Dpnt, Word16 Start )
             Exp = norm_l( Acc0 ) ;
             Acc0 = L_shl( Acc0, Exp ) ;
             Exp = shl( Exp, (Word16) 1 ) ;
-            Ccr = round( Acc0 ) ;
+            Ccr = round_( Acc0 ) ;
             Acc0 = L_mult( Ccr, Ccr ) ;
             Ccr = norm_l( Acc0 ) ;
             Acc0 = L_shl( Acc0, Ccr ) ;
@@ -228,7 +228,7 @@ Word16   Estim_Pitch( Word16 *Dpnt, Word16 Start )
             Enr = norm_l( Acc0 ) ;
             Acc0 = L_shl( Acc0, Enr ) ;
             Exp = sub( Exp, Enr ) ;
-            Enr = round( Acc0 ) ;
+            Enr = round_( Acc0 ) ;
 
             if ( Ccr >= Enr ) {
                 Exp = sub( Exp, (Word16) 1 ) ;
@@ -355,7 +355,7 @@ PWDEF Comp_Pw( Word16 *Dpnt, Word16 Start, Word16 Olp )
     Exp = norm_l( Acc1 ) ;
     for ( i = 0 ; i < 15 ; i ++ ) {
         Acc0 = L_shl( Lcr[i], Exp ) ;
-        Scr[i] = round( Acc0 ) ;
+        Scr[i] = round_( Acc0 ) ;
 
     }
 
@@ -452,7 +452,7 @@ void  Filt_Pw( Word16 *DataBuff, Word16 *Dpnt, Word16 Start, PWDEF Pw )
     for ( i = 0 ; i < SubFrLen ; i ++ ) {
         Acc0 = L_deposit_h( Dpnt[PitchMax+Start+i] ) ;
         Acc0 = L_msu( Acc0, Pw.Gain, Dpnt[PitchMax+Start-Pw.Indx+i] ) ;
-        DataBuff[Start+(Word16)i] = round( Acc0 ) ;
+        DataBuff[Start+(Word16)i] = round_( Acc0 ) ;
     }
 
     return;
@@ -654,7 +654,7 @@ Word16 Olp )
 
     Exp = norm_l( Acc0 ) ;
     Acc0 = L_shl( Acc0, Exp ) ;
-    ImrCorr[0] = round( Acc0 ) ;
+    ImrCorr[0] = round_( Acc0 ) ;
 
     /* Compute all the other */
     for ( i = 1 ; i < SubFrLen ; i ++ ) {
@@ -662,7 +662,7 @@ Word16 Olp )
         for ( j = i ; j < SubFrLen ; j ++ )
             Acc0 = L_mac( Acc0, OccPos[j], OccPos[j-i] ) ;
         Acc0 = L_shl( Acc0, Exp ) ;
-        ImrCorr[i] = round( Acc0 ) ;
+        ImrCorr[i] = round_( Acc0 ) ;
     }
 
     /* Cross correlation with the signal */
@@ -1046,7 +1046,7 @@ void  Find_Acbk( Word16 *Tv, Word16 *ImpResp, Word16 *PrevExc, LINEDEF
             Acc0 = (Word32) 0 ;
             for ( j = 0 ; j <= i ; j ++ )
                 Acc0 = L_mac( Acc0, RezBuf[ClPitchOrd-1+j], ImpResp[i-j] ) ;
-            FltBuf[ClPitchOrd-1][i] = round( Acc0 ) ;
+            FltBuf[ClPitchOrd-1][i] = round_( Acc0 ) ;
         }
 
         /* Update all the others */
@@ -1055,7 +1055,7 @@ void  Find_Acbk( Word16 *Tv, Word16 *ImpResp, Word16 *PrevExc, LINEDEF
             for ( j = 1 ; j < SubFrLen ; j ++ ) {
                 Acc0 = L_deposit_h( FltBuf[i+1][j-1] ) ;
                 Acc0 = L_mac( Acc0, RezBuf[i], ImpResp[j] ) ;
-                FltBuf[i][j] = round( Acc0 ) ;
+                FltBuf[i][j] = round_( Acc0 ) ;
             }
         }
 
@@ -1103,7 +1103,7 @@ void  Find_Acbk( Word16 *Tv, Word16 *ImpResp, Word16 *PrevExc, LINEDEF
     /* Convert to shorts */
     for ( i = 0 ; i < Hb*20 ; i ++ ) {
         Acc0 = L_shl( CorBuf[i], Exp ) ;
-        CorVct[i] = round( Acc0 ) ;
+        CorVct[i] = round_( Acc0 ) ;
     }
 
     /* Test potential error */
@@ -1173,7 +1173,7 @@ void  Find_Acbk( Word16 *Tv, Word16 *ImpResp, Word16 *PrevExc, LINEDEF
         for ( j = 0 ; j <= i ; j ++ )
             Acc0 = L_msu( Acc0, RezBuf[j], ImpResp[i-j] ) ;
         Acc0 = L_shl( Acc0, (Word16) 1 ) ;
-        Tv[i] = round( Acc0 ) ;
+        Tv[i] = round_( Acc0 ) ;
     }
 
     return;
@@ -1272,7 +1272,7 @@ Word16 Gid )
         for ( j = 0 ; j < ClPitchOrd ; j ++ )
             Acc0 = L_mac( Acc0, RezBuf[i+j], sPnt[j] ) ;
         Acc0 = L_shl( Acc0, (Word16) 1 ) ;
-        Tv[i] = round( Acc0 ) ;
+        Tv[i] = round_( Acc0 ) ;
     }
 
     return;
@@ -1340,7 +1340,7 @@ Word16   Comp_Info( Word16 *Buff, Word16 Olp, Word16 *Gain, Word16 *ShGain)
     for ( j = 0 ; j < 2*SubFrLen ; j ++ )
         Acc0 = L_mac( Acc0, Buff[PitchMax+Frame-2*SubFrLen+j],
                                     Buff[PitchMax+Frame-2*SubFrLen+j] ) ;
-    Tenr = round( Acc0 ) ;
+    Tenr = round_( Acc0 ) ;
     *Gain = Tenr;
 
     /* Compute best energy */
@@ -1349,12 +1349,12 @@ Word16   Comp_Info( Word16 *Buff, Word16 Olp, Word16 *Gain, Word16 *ShGain)
         Acc0 = L_mac( Acc0, Buff[PitchMax+Frame-2*SubFrLen-(int)Indx+j],
                             Buff[PitchMax+Frame-2*SubFrLen-(int)Indx+j] ) ;
 
-    Ccr = round( Acc1 ) ;
+    Ccr = round_( Acc1 ) ;
 
     if ( Ccr <= (Word16) 0 )
         return (Word16) 0 ;
 
-    Enr = round( Acc0 ) ;
+    Enr = round_( Acc0 ) ;
 
     Acc0 = L_mult( Enr, Tenr ) ;
     Acc0 = L_shr( Acc0, (Word16) 3 ) ;
@@ -1730,7 +1730,7 @@ PFDEF Get_Ind( Word16 Ind, Word16 Ten, Word16 Ccr, Word16 Enr )
         Acc1 = L_mult( Enr, Exp ) ;
         Acc1 = L_shr( Acc1, (Word16) 1 ) ;
         Acc0 = L_add( Acc0, Acc1 ) ;
-        Exp = round( Acc0 ) ;
+        Exp = round_( Acc0 ) ;
 
         Acc1 = L_deposit_h( Ten ) ;
         Acc0 = L_deposit_h( Exp ) ;
@@ -1786,7 +1786,7 @@ void  Filt_Lpf( Word16 *Tv, Word16 *Buff, PFDEF Pf, Word16 Sfc )
         Acc0 = L_mult( Buff[PitchMax+(int)Sfc*SubFrLen+i], Pf.ScGn ) ;
         Acc0 = L_mac( Acc0, Buff[PitchMax+(int)Sfc*SubFrLen+(int)Pf.Indx+i],
                                                                 Pf.Gain ) ;
-        Tv[(int)Sfc*SubFrLen+i] = round( Acc0 ) ;
+        Tv[(int)Sfc*SubFrLen+i] = round_( Acc0 ) ;
     }
 
     return;

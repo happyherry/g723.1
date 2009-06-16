@@ -641,7 +641,7 @@ Word32 L_add(Word32 L_var1, Word32 L_var2)
  |___________________________________________________________________________|
 */
 
-Word16 round(Word32 L_var1)
+Word16 round_(Word32 L_var1)
 {
     Word16 var_out;
     Word32 L_arrondi;

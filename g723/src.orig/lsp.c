@@ -256,7 +256,7 @@ void AtoLsp( Word16 *LspVect, Word16 *Lpc, Word16 *PrevLsp )
     /* Normalize and convert to shorts */
     for ( i = 0 ; i < LpcOrder+2 ; i ++ ) {
         Acc0 = L_shl( Lpq[i], Exp ) ;
-        Spq[i] = round( Acc0 ) ;
+        Spq[i] = round_( Acc0 ) ;
     }
 
  /*
@@ -875,7 +875,7 @@ void  Lsp_Int( Word16 *QntLpc, Word16 *CurrLsp, Word16 *PrevLsp )
             Acc0 = L_deposit_h( PrevLsp[j] ) ;
             Acc0 = L_mac( Acc0, Tmp, PrevLsp[j] ) ;
             Acc0 = L_msu( Acc0, Tmp, CurrLsp[j] ) ;
-            Dpnt[j] = round( Acc0 ) ;
+            Dpnt[j] = round_( Acc0 ) ;
         }
 
  /*
@@ -948,7 +948,7 @@ void  LsptoA( Word16 *Lsp )
         Acc0 = L_mac( Acc0, Tmp, add( shl( (Word16)(Lsp[i] & 0x007f) ,
                                 (Word16)8 ), (Word16) 0x0080 ) ) ;
         Acc0 = L_shl( Acc0, (Word16) 1 ) ;
-        Lsp[i] = negate( round( Acc0 ) ) ;
+        Lsp[i] = negate( round_( Acc0 ) ) ;
     }
 
 
@@ -1046,14 +1046,14 @@ void  LsptoA( Word16 *Lsp )
         Acc0 = L_sub( Acc0, Q[i] ) ;
         Acc0 = L_add( Acc0, Q[i+1] ) ;
         Acc0 = L_shl( Acc0, (Word16) 3 ) ;
-        Lsp[i] = negate( round( Acc0 ) ) ;
+        Lsp[i] = negate( round_( Acc0 ) ) ;
 
         Acc1 = P[i] ;
         Acc1 = L_add( Acc1, P[i+1] ) ;
         Acc1 = L_add( Acc1, Q[i] ) ;
         Acc1 = L_sub( Acc1, Q[i+1] ) ;
         Acc1 = L_shl( Acc1, (Word16) 3 ) ;
-        Lsp[LpcOrder-1-i] = negate( round( Acc1 ) ) ;
+        Lsp[LpcOrder-1-i] = negate( round_( Acc1 ) ) ;
     }
 
 }

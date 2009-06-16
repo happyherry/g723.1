@@ -176,7 +176,7 @@ void  Comp_Lpc( Word16 *UnqLpc, Word16 *PrevDat, Word16 *DataBuff )
         Exp = norm_l( Acc1 ) ;
         Acc1 = L_shl( Acc1, Exp ) ;
 
-        curAcf[0] = round( Acc1 ) ;
+        curAcf[0] = round_( Acc1 ) ;
         if(curAcf[0] == 0) {
             for ( i = 1 ; i <= LpcOrder ; i ++ )
                 curAcf[i] = 0;
@@ -195,7 +195,7 @@ void  Comp_Lpc( Word16 *UnqLpc, Word16 *PrevDat, Word16 *DataBuff )
                 }
                 Acc0 = L_shl( Acc1, Exp ) ;
                 Acc0 = L_mls( Acc0, BinomialWindowTable[i-1] ) ;
-                curAcf[i] = round(Acc0) ;
+                curAcf[i] = round_(Acc0) ;
             }
             /* Save Acf scaling factor */
             ShAcf_sf[k] = add(Exp, shl(ShAcf_sf[k], 1));
@@ -314,14 +314,14 @@ Word16  Durbin( Word16 *Lpc, Word16 *Corr, Word16 Err, Word16 *Pk2 )
   */
         Acc0 = L_deposit_h( negate(Pk) ) ;
         Acc0 = L_shr( Acc0, (Word16) 2 ) ;
-        Lpc[i] = round( Acc0 ) ;
+        Lpc[i] = round_( Acc0 ) ;
 
  /*
   * Update the prediction error
   */
         Acc1 = L_mls( Acc1, Pk ) ;
         Acc1 = L_add( Acc1, Acc2 ) ;
-        Err = round( Acc1 ) ;
+        Err = round_( Acc1 ) ;
 
  /*
   * Compute the remaining LPC coefficients
@@ -332,7 +332,7 @@ Word16  Durbin( Word16 *Lpc, Word16 *Corr, Word16 Err, Word16 *Pk2 )
         for ( j = 0 ; j < i ; j ++ ) {
             Acc0 = L_deposit_h( Lpc[j] ) ;
             Acc0 = L_mac( Acc0, Pk, Temp[i-j-1] ) ;
-            Lpc[j] = round( Acc0 ) ;
+            Lpc[j] = round_( Acc0 ) ;
         }
     }
 
@@ -464,7 +464,7 @@ void  Error_Wght( Word16 *Dpnt, Word16 *PerLpc )
             Acc0 = L_shl( Acc0, (Word16) 2 ) ;
 
             /* Update memory */
-            CodStat.WghtIirDl[0] = round( Acc0 ) ;
+            CodStat.WghtIirDl[0] = round_( Acc0 ) ;
             *Dpnt ++ = CodStat.WghtIirDl[0] ;
         }
         PerLpc += 2*LpcOrder ;
@@ -548,7 +548,7 @@ void  Comp_Ir( Word16 *ImpResp, Word16 *QntLpc, Word16 *PerLpc, PWDEF Pw )
                                 Acc0 = L_shl( Acc0, (Word16) 1 ) ;
         for ( j = LpcOrder-1 ; j > 0 ; j -- )
             FirDl[j] = FirDl[j-1] ;
-        FirDl[0] = round( Acc1 ) ;
+        FirDl[0] = round_( Acc1 ) ;
 
         /* Iir part */
         for ( j = 0 ; j < LpcOrder ; j ++ )
@@ -556,7 +556,7 @@ void  Comp_Ir( Word16 *ImpResp, Word16 *QntLpc, Word16 *PerLpc, PWDEF Pw )
         for ( j = LpcOrder-1 ; j > 0 ; j -- )
             IirDl[j] = IirDl[j-1] ;
         Acc0 = L_shl( Acc0, (Word16) 2 ) ;
-        IirDl[0] = round( Acc0 ) ;
+        IirDl[0] = round_( Acc0 ) ;
         Temp[PitchMax+i] = IirDl[0] ;
 
  /*
@@ -565,7 +565,7 @@ void  Comp_Ir( Word16 *ImpResp, Word16 *QntLpc, Word16 *PerLpc, PWDEF Pw )
 
         Acc0 = L_deposit_h( IirDl[0] ) ;
         Acc0 = L_msu( Acc0, Pw.Gain, Temp[PitchMax-Pw.Indx+i] ) ;
-        ImpResp[i] = round( Acc0 ) ;
+        ImpResp[i] = round_( Acc0 ) ;
 
         Acc0 = (Word32) 0 ;
     }
@@ -655,7 +655,7 @@ void  Sub_Ring( Word16 *Dpnt, Word16 *QntLpc, Word16 *PerLpc, Word16
             Acc0 = L_msu( Acc0, PerLpc[j], FirDl[j] ) ;
         for ( j = LpcOrder-1 ; j > 0 ; j -- )
             FirDl[j] = FirDl[j-1] ;
-        FirDl[0] = round( Acc1 ) ;
+        FirDl[0] = round_( Acc1 ) ;
 
         /* Iir part */
         for ( j = 0 ; j < LpcOrder ; j ++ )
@@ -663,7 +663,7 @@ void  Sub_Ring( Word16 *Dpnt, Word16 *QntLpc, Word16 *PerLpc, Word16
         Acc0 = L_shl( Acc0, (Word16) 2 ) ;
         for ( j = LpcOrder-1 ; j > 0 ; j -- )
             IirDl[j] = IirDl[j-1] ;
-        IirDl[0] = round( Acc0 ) ;
+        IirDl[0] = round_( Acc0 ) ;
         Temp[PitchMax+i] = IirDl[0] ;
 
  /*
@@ -672,7 +672,7 @@ void  Sub_Ring( Word16 *Dpnt, Word16 *QntLpc, Word16 *PerLpc, Word16
   */
         Acc0 = L_deposit_h( sub( Dpnt[i], IirDl[0] ) ) ;
         Acc0 = L_mac( Acc0, Pw.Gain, Temp[PitchMax-(int)Pw.Indx+i] ) ;
-        Dpnt[i] = round ( Acc0 ) ;
+        Dpnt[i] = round_ ( Acc0 ) ;
     }
 }
 
@@ -747,7 +747,7 @@ void  Upd_Ring( Word16 *Dpnt, Word16 *QntLpc, Word16 *PerLpc, Word16
             Acc0 = L_mac( Acc0, QntLpc[j], CodStat.RingFirDl[j] ) ;
         Acc1 = L_shl( Acc0, (Word16) 2 ) ;
 
-        Dpnt[i] = shl( round( Acc1 ), (Word16) 1 ) ;
+        Dpnt[i] = shl( round_( Acc1 ), (Word16) 1 ) ;
 
  /*
   * Perceptual weighting filter
@@ -760,7 +760,7 @@ void  Upd_Ring( Word16 *Dpnt, Word16 *QntLpc, Word16 *PerLpc, Word16
         /* Update FIR memory */
         for ( j = LpcOrder-1 ; j > 0 ; j -- )
             CodStat.RingFirDl[j] = CodStat.RingFirDl[j-1] ;
-        CodStat.RingFirDl[0] = round( Acc1 ) ;
+        CodStat.RingFirDl[0] = round_( Acc1 ) ;
 
         /* IIR part */
         for ( j = 0 ; j < LpcOrder ; j ++ )
@@ -770,7 +770,7 @@ void  Upd_Ring( Word16 *Dpnt, Word16 *QntLpc, Word16 *PerLpc, Word16
         /* Update IIR memory */
         for ( j = LpcOrder-1 ; j > 0 ; j -- )
             CodStat.RingIirDl[j] = CodStat.RingIirDl[j-1] ;
-        CodStat.RingIirDl[0] = round( Acc0 ) ;
+        CodStat.RingIirDl[0] = round_( Acc0 ) ;
 
         /* Update harmonic noise shaping memory */
         PrevErr[PitchMax-SubFrLen+i] = CodStat.RingIirDl[0] ;
@@ -837,7 +837,7 @@ void     Synt( Word16 *Dpnt, Word16 *Lpc )
 
         Acc0 = L_shl( Acc0, (Word16) 2 ) ;
 
-        DecStat.SyntIirDl[0] = round( Acc0 ) ;
+        DecStat.SyntIirDl[0] = round_( Acc0 ) ;
 
  /*
   * Scale output if postfilter is off.  (Otherwise output is
@@ -960,7 +960,7 @@ Word32  Spf( Word16 *Tv, Word16 *Lpc )
     Acc0 = L_deposit_h( DecStat.Park ) ;
     Acc0 = L_msu( Acc0, DecStat.Park, (Word16) 0x2000 ) ;
     Acc0 = L_mac( Acc0, Tmp, (Word16) 0x2000 ) ;
-    DecStat.Park = round( Acc0 ) ;
+    DecStat.Park = round_( Acc0 ) ;
 
     Tmp  = mult( DecStat.Park, PreCoef ) ;
     Tmp &= (Word16) 0xfffc ;
@@ -1001,14 +1001,14 @@ Word32  Spf( Word16 *Tv, Word16 *Lpc )
         Acc0 = L_shl( Acc0, (Word16) 2 ) ;
         Acc1 = Acc0 ;
 
-        DecStat.PostIirDl[0] = round( Acc0 ) ;
+        DecStat.PostIirDl[0] = round_( Acc0 ) ;
 
  /*
   * Compensation filter
   */
         Acc1 = L_mac( Acc1, DecStat.PostIirDl[1], Tmp ) ;
 
-        Tv[i] = round( Acc1 ) ;
+        Tv[i] = round_( Acc1 ) ;
     }
     return Sen ;
 }

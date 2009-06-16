@@ -131,7 +131,7 @@ Flag Comp_Vad( Word16 *Dpnt)
         Acc0 = L_mult( Dpnt[i], 0x2000 ) ;
         for ( j = 0 ; j < LpcOrder ; j ++ )
             Acc0 = L_msu( Acc0, Dpnt[i-j-1], VadStat.NLpc[j] ) ;
-        Tm0 = round ( Acc0 ) ;
+        Tm0 = round_ ( Acc0 ) ;
         Acc1 = L_mac( Acc1, Tm0, Tm0 ) ;
     }
 
