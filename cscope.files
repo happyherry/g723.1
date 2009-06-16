@@ -1,0 +1,17 @@
+g723/include/g723_const.h
+g723/include/lbccodec.h
+g723/src.orig/basop.c
+g723/src.orig/cod_cng.c
+g723/src.orig/coder.c
+g723/src.orig/dec_cng.c
+g723/src.orig/decod.c
+g723/src.orig/exc_lbc.c
+g723/src.orig/lpc.c
+g723/src.orig/lsp.c
+g723/src.orig/tab_lbc.c
+g723/src.orig/tame.c
+g723/src.orig/util_cng.c
+g723/src.orig/util_lbc.c
+g723/src.orig/vad.c
+g723/test/compare_test.c
+g723/test/lbccodec.c

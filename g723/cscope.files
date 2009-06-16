@@ -1,0 +1,17 @@
+include/g723_const.h
+include/lbccodec.h
+src.orig/basop.c
+src.orig/cod_cng.c
+src.orig/coder.c
+src.orig/dec_cng.c
+src.orig/decod.c
+src.orig/exc_lbc.c
+src.orig/lpc.c
+src.orig/lsp.c
+src.orig/tab_lbc.c
+src.orig/tame.c
+src.orig/util_cng.c
+src.orig/util_lbc.c
+src.orig/vad.c
+test/compare_test.c
+test/lbccodec.c

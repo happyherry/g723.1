@@ -1,0 +1,111 @@
+Lbccodec.o Lbccodec.o: Lbccodec.c /usr/include/stdio.h \
+  /usr/include/features.h /usr/include/sys/cdefs.h \
+  /usr/include/bits/wordsize.h /usr/include/gnu/stubs.h \
+  /usr/include/gnu/stubs-32.h \
+  /usr/lib/gcc/i486-linux-gnu/4.2.4/include/stddef.h \
+  /usr/include/bits/types.h /usr/include/bits/typesizes.h \
+  /usr/include/libio.h /usr/include/_G_config.h /usr/include/wchar.h \
+  /usr/lib/gcc/i486-linux-gnu/4.2.4/include/stdarg.h \
+  /usr/include/bits/stdio_lim.h /usr/include/bits/sys_errlist.h \
+  /usr/include/bits/stdio.h /usr/include/stdlib.h \
+  /usr/include/sys/types.h /usr/include/time.h /usr/include/endian.h \
+  /usr/include/bits/endian.h /usr/include/sys/select.h \
+  /usr/include/bits/select.h /usr/include/bits/sigset.h \
+  /usr/include/bits/time.h /usr/include/sys/sysmacros.h \
+  /usr/include/bits/pthreadtypes.h /usr/include/alloca.h \
+  /usr/include/string.h /usr/include/bits/string.h \
+  /usr/include/bits/string2.h ../include/Lbccodec.h ../g723.src/Basop.c \
+  ../g723.src/Tab_lbc.c ../g723.src/Coder.c ../g723.src/Decod.c \
+  ../g723.src/Exc_lbc.c ../g723.src/Util_lbc.c ../g723.src/Cod_cng.c \
+  ../g723.src/Dec_cng.c ../g723.src/Vad.c ../g723.src/Tame.c \
+  ../g723.src/Lsp.c ../g723.src/Lpc.c ../g723.src/Util_cng.c
+
+/usr/include/stdio.h:
+
+/usr/include/features.h:
+
+/usr/include/sys/cdefs.h:
+
+/usr/include/bits/wordsize.h:
+
+/usr/include/gnu/stubs.h:
+
+/usr/include/gnu/stubs-32.h:
+
+/usr/lib/gcc/i486-linux-gnu/4.2.4/include/stddef.h:
+
+/usr/include/bits/types.h:
+
+/usr/include/bits/typesizes.h:
+
+/usr/include/libio.h:
+
+/usr/include/_G_config.h:
+
+/usr/include/wchar.h:
+
+/usr/lib/gcc/i486-linux-gnu/4.2.4/include/stdarg.h:
+
+/usr/include/bits/stdio_lim.h:
+
+/usr/include/bits/sys_errlist.h:
+
+/usr/include/bits/stdio.h:
+
+/usr/include/stdlib.h:
+
+/usr/include/sys/types.h:
+
+/usr/include/time.h:
+
+/usr/include/endian.h:
+
+/usr/include/bits/endian.h:
+
+/usr/include/sys/select.h:
+
+/usr/include/bits/select.h:
+
+/usr/include/bits/sigset.h:
+
+/usr/include/bits/time.h:
+
+/usr/include/sys/sysmacros.h:
+
+/usr/include/bits/pthreadtypes.h:
+
+/usr/include/alloca.h:
+
+/usr/include/string.h:
+
+/usr/include/bits/string.h:
+
+/usr/include/bits/string2.h:
+
+../include/Lbccodec.h:
+
+../g723.src/Basop.c:
+
+../g723.src/Tab_lbc.c:
+
+../g723.src/Coder.c:
+
+../g723.src/Decod.c:
+
+../g723.src/Exc_lbc.c:
+
+../g723.src/Util_lbc.c:
+
+../g723.src/Cod_cng.c:
+
+../g723.src/Dec_cng.c:
+
+../g723.src/Vad.c:
+
+../g723.src/Tame.c:
+
+../g723.src/Lsp.c:
+
+../g723.src/Lpc.c:
+
+../g723.src/Util_cng.c:
