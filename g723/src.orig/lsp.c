@@ -66,7 +66,7 @@ extern Word16   BandExpTable[LpcOrder] ;
 extern Word16 mult_r(Word16 var1, Word16 var2);  /* Mult with round,     2 */
 extern Word16 round_(Word32 L_var1);              /* Round,               1 */
 extern Word16 mac_r(Word32 L_var3, Word16 var1, Word16 var2);
-extern Word16 msu_r(Word32 L_var3, Word16 var1, Word16 var2);
+//extern Word16 msu_r(Word32 L_var3, Word16 var1, Word16 var2);
 extern Word32 L_mls( Word32, Word16 ) ;        /* Wght ?? */
 extern Word32 L_mult(Word16 var1, Word16 var2);  /* Long mult,           1 */
 extern Word16 negate(Word16 var1);               /* Short negate,        1 */
@@ -87,11 +87,11 @@ extern Word16 extract_h(Word32 L_var1);          /* Extract high,        1 */
 extern Word16 div_l( Word32, Word16 ) ;
 extern Word32 L_mac(Word32 L_var3, Word16 var1, Word16 var2); /* Mac,    1 */
 extern Word32 L_deposit_h(Word16 var1);       /* 16 bit var1 -> MSB,     2 */
-extern Word32 L_sub(Word32 L_var1, Word32 L_var2);   /* Long sub,        2 */
+//extern Word32 L_sub(Word32 L_var1, Word32 L_var2);   /* Long sub,        2 */
 extern Word32 L_abs(Word32 L_var1);            /* Long abs,              3 */
 extern Word16 norm_l(Word32 L_var1);           /* Long norm,            30 */
-extern Word32 L_shl(Word32 L_var1, Word16 var2); /* Long shift left,     2 */
-extern Word32 L_mac(Word32 L_var3, Word16 var1, Word16 var2); /* Mac,    1 */
+//extern Word32 L_shl(Word32 L_var1, Word16 var2); /* Long shift left,     2 */
+//extern Word32 L_mac(Word32 L_var3, Word16 var1, Word16 var2); /* Mac,    1 */
 extern Word16 norm_s(Word16 var1);             /* Short norm,           15 */
 
 /*

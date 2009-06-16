@@ -34,7 +34,7 @@ extern  void Dec_Cng(Word16 Ftyp, LINEDEF *Line, Word16 *DataExc,Word16 *QntLpc)
 
 extern   DECCNGDEF DecCng;
 extern  Word16 add(Word16 var1, Word16 var2);     /* Short add,           1 */
-extern  Word32 L_add(Word32 L_var1, Word32 L_var2);   /* Long add,        2 */
+//extern  Word32 L_add(Word32 L_var1, Word32 L_var2);   /* Long add,        2 */
 extern  void Lsp_Inq( Word16 *Lsp, Word16 *PrevLsp, Word32 LspId, Word16 Crc );
 extern  void Lsp_Int( Word16 *QntLpc, Word16 *CurrLsp, Word16 *PrevLsp );
 extern  Word16 shr(Word16 var1, Word16 var2);     /* Short shift right,   1 */

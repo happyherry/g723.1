@@ -68,7 +68,7 @@ extern Word16 shr(Word16 var1, Word16 var2);     /* Short shift right,   1 */
 extern Word32 L_shr(Word32 L_var1, Word16 var2); /* Long shift right,    2 */
 extern Word16 abs_s(Word16 var1);                /* Short abs,           1 */
 extern Word16 norm_s(Word16 var1);             /* Short norm,           15 */
-extern Word32 L_shr(Word32 L_var1, Word16 var2); /* Long shift right,    2 */
+//extern Word32 L_shr(Word32 L_var1, Word16 var2); /* Long shift right,    2 */
 extern Word16 extract_l(Word32 L_var1);          /* Extract low,         1 */
 extern Word16 sub(Word16 var1, Word16 var2);     /* Short sub,           1 */
 extern Word16* Par2Ser( Word32 Inp, Word16 *Pnt, int BitNum );
@@ -621,7 +621,11 @@ LINEDEF  Line_Unpk( char *Vinp, Word16 *Ftyp, Word16 Crc )
     Word16 Bound_AcGn;
 
     Line.Crc = Crc;
-    if(Crc != 0) return Line;
+    if(Crc != 0)
+        {
+           Line.LspId = 0L;    /* Dummy : to avoid gcc warning */ 
+           return Line;
+        }
 
     /* Unpack the byte info to BitStream vector */
     for ( i = 0 ; i < 192 ; i ++ )

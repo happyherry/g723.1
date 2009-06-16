@@ -70,18 +70,18 @@ extern Word32 L_msu(Word32 L_var3, Word16 var1, Word16 var2); /* Msu,    1 */
 extern Word16 norm_l(Word32 L_var1);           /* Long norm,            30 */
 extern Word32 L_shl(Word32 L_var1, Word16 var2); /* Long shift left,     2 */
 extern Word16 shl(Word16 var1, Word16 var2);     /* Short shift left,    1 */
-extern Word32 L_shl(Word32 L_var1, Word16 var2); /* Long shift left,     2 */
+//extern Word32 L_shl(Word32 L_var1, Word16 var2); /* Long shift left,     2 */
 extern Word16 round_(Word32 L_var1);              /* Round,               1 */
 extern Word16 mult_r(Word16 var1, Word16 var2);  /* Mult with round,     2 */
-extern Word16 shr_r(Word16 var1, Word16 var2);/* Shift right with round, 2 */
-extern Word16 mac_r(Word32 L_var3, Word16 var1, Word16 var2);
-extern Word16 msu_r(Word32 L_var3, Word16 var1, Word16 var2);
+//extern Word16 shr_r(Word16 var1, Word16 var2);/* Shift right with round, 2 */
+//extern Word16 mac_r(Word32 L_var3, Word16 var1, Word16 var2);
+//extern Word16 msu_r(Word32 L_var3, Word16 var1, Word16 var2);
 extern Word32 L_mult(Word16 var1, Word16 var2);  /* Long mult,           1 */
 extern Word16 add(Word16 var1, Word16 var2);     /* Short add,           1 */
 extern Word32 L_add(Word32 L_var1, Word32 L_var2);   /* Long add,        2 */
 extern Word16 extract_h(Word32 L_var1);          /* Extract high,        1 */
 extern Word16 shr(Word16 var1, Word16 var2);     /* Short shift right,   1 */
-extern Word16 shr_r(Word16 var1, Word16 var2);/* Shift right with round, 2 */
+//extern Word16 shr_r(Word16 var1, Word16 var2);/* Shift right with round, 2 */
 extern Word32 L_negate(Word32 L_var1);               /* Long negate,     2 */
 extern Word32 L_shr(Word32 L_var1, Word16 var2); /* Long shift right,    2 */
 extern Word32 L_abs(Word32 L_var1);            /* Long abs,              3 */
@@ -95,8 +95,8 @@ extern Word16 mult(Word16 var1, Word16 var2);    /* Short mult,          1 */
 extern Word16 Test_Err(Word16 Lag1, Word16 Lag2);
 
 
-extern void  Gen_Trn( Word16 *Dst, Word16 *Src, Word16 Olp );
-extern Word16 search_T0 ( Word16 T0, Word16 Gid, Word16 *gain_T0);
+//extern void  Gen_Trn( Word16 *Dst, Word16 *Src, Word16 Olp );
+//extern Word16 search_T0 ( Word16 T0, Word16 Gid, Word16 *gain_T0);
 extern Word16 extract_l(Word32 L_var1);          /* Extract low,         1 */
 extern Word16 negate(Word16 var1);               /* Short negate,        1 */
 extern Word16 abs_s(Word16 var1);                /* Short abs,           1 */
@@ -142,8 +142,7 @@ PFDEF Get_Ind( Word16 Ind, Word16 Ten, Word16 Ccr, Word16 Enr );
 void  Filt_Lpf( Word16 *Tv, Word16 *Buff, PFDEF Pf, Word16 Sfc );
 void reset_max_time(void);
 Word16 search_T0 ( Word16 T0, Word16 Gid, Word16 *gain_T0);
-Word16 ACELP_LBC_code(Word16 X[], Word16 h[], Word16 T0, Word16 code[],
-            Word16 *gain, Word16 *shift, Word16 *sign, Word16 gain_T0);
+Word16 ACELP_LBC_code(Word16 X[], Word16 h[], Word16 T0, Word16 code[],Word16 *gain, Word16 *shift, Word16 *sign, Word16 gain_T0);
 void   Cor_h(Word16 *H, Word16 *rr);
 void   Cor_h_X(Word16 h[], Word16 X[], Word16 D[]);
 Word16 D4i64_LBC(Word16 Dn[], Word16 rr[], Word16 h[], Word16 cod[],
