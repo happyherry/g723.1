@@ -18,15 +18,15 @@ all: $(PROGS)
 # flat test program
 
 lbccodec.o: lbccodec.c 
-	$(FLAT_CC) $(G723_CFLAGS) -o lbccodec.o -c lbccodec.c
+	$(FLAT_CC) $(G723_CFLAGS) -pg -o lbccodec.o -c lbccodec.c
 
 lbccodec: lbccodec.o ../src.orig/libg723.a
-	$(FLAT_CC) $(FLAT_LDFLAGS) -o $@ $^ 
+	$(FLAT_CC) $(FLAT_LDFLAGS) -pg -o $@ $^ 
 
 tvcmp:compare_test.c
 	$(FLAT_CC) -o tvcmp compare_test.c
 
 clean:
-	rm -f *.o $(PROGS) *.gdb *~
+	rm -f *.o $(PROGS) *.gdb *~ \#*
 
 .PHONY: all clean $(LIBDIRS)

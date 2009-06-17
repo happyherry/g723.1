@@ -1,0 +1,99 @@
+Flat profile:
+
+Each sample counts as 0.01 seconds.
+  %   cumulative   self              self     total           
+ time   seconds   seconds    calls  ms/call  ms/call  name    
+ 26.80      2.27     2.27 305296302     0.00     0.00  L_mult
+ 20.78      4.03     1.76 282555824     0.00     0.00  L_add
+ 14.88      5.29     1.26 219040103     0.00     0.00  L_mac
+  9.09      6.06     0.77     6694     0.12     0.53  Find_Best
+  7.79      6.72     0.66     4076     0.16     0.61  Find_Acbk
+  3.90      7.05     0.33 59521503     0.00     0.00  L_shr
+  3.54      7.35     0.30 31320273     0.00     0.00  L_sub
+  1.65      7.49     0.14     1019     0.14     0.30  Lsp_Svq
+  1.42      7.61     0.12 27407442     0.00     0.00  L_msu
+  1.18      7.71     0.10     2038     0.05     0.35  Estim_Pitch
+  0.94      7.79     0.08  9324892     0.00     0.00  L_shl
+  0.71      7.85     0.06     4076     0.01     0.06  Comp_Ir
+  0.59      7.90     0.05 12970219     0.00     0.00  extract_h
+  0.59      7.95     0.05  9254447     0.00     0.00  round_
+  0.59      8.00     0.05     4076     0.01     0.05  Sub_Ring
+  0.59      8.05     0.05     4076     0.01     0.05  Upd_Ring
+  0.47      8.09     0.04  7913056     0.00     0.00  extract_l
+  0.47      8.13     0.04  7686115     0.00     0.00  abs_s
+  0.47      8.17     0.04  3529853     0.00     0.00  mult_r
+  0.47      8.21     0.04     1019     0.04     0.28  Comp_Lpc
+  0.35      8.24     0.03  5339880     0.00     0.00  sature
+  0.35      8.27     0.03     5095     0.01     0.01  Vec_Norm
+  0.24      8.29     0.02  7662673     0.00     0.00  L_abs
+  0.24      8.31     0.02  5072001     0.00     0.00  L_deposit_h
+  0.24      8.33     0.02  1025370     0.00     0.00  add
+  0.24      8.35     0.02     1019     0.02     8.31  Coder
+  0.24      8.37     0.02     1019     0.02     0.13  Error_Wght
+  0.12      8.38     0.01    22418     0.00     0.00  Get_Rez
+  0.12      8.39     0.01    11704     0.00     0.00  div_s
+  0.12      8.40     0.01     8152     0.00     0.01  Decod_Acbk
+  0.12      8.41     0.01     4076     0.00     0.02  Comp_Pw
+  0.12      8.42     0.01     4076     0.00     0.00  Fcbk_Pack
+  0.12      8.43     0.01     4076     0.00     0.00  Filt_Pw
+  0.12      8.44     0.01     1019     0.01     0.04  AtoLsp
+  0.12      8.45     0.01     1019     0.01     0.02  Lsp_Int
+  0.12      8.46     0.01     1019     0.01     0.01  Mem_Shift
+  0.12      8.47     0.01     1019     0.01     0.01  Wght_Lpc
+  0.00      8.47     0.00  1437737     0.00     0.00  shl
+  0.00      8.47     0.00   774549     0.00     0.00  sub
+  0.00      8.47     0.00   494221     0.00     0.00  shr
+  0.00      8.47     0.00   406736     0.00     0.00  L_mls
+  0.00      8.47     0.00   288328     0.00     0.00  norm_l
+  0.00      8.47     0.00   280167     0.00     0.00  negate
+  0.00      8.47     0.00    68244     0.00     0.00  L_deposit_l
+  0.00      8.47     0.00    50880     0.00     0.00  div_l
+  0.00      8.47     0.00    19361     0.00     0.00  Par2Ser
+  0.00      8.47     0.00    10597     0.00     0.00  L_negate
+  0.00      8.47     0.00    10108     0.00     0.00  mult
+  0.00      8.47     0.00     6114     0.00     0.00  norm_s
+  0.00      8.47     0.00     4146     0.00     0.00  Gen_Trn
+  0.00      8.47     0.00     4076     0.00     0.01  Durbin
+  0.00      8.47     0.00     4076     0.00     0.87  Find_Fcbk
+  0.00      8.47     0.00     4076     0.00     0.00  LsptoA
+  0.00      8.47     0.00     4076     0.00     0.00  Test_Err
+  0.00      8.47     0.00     4076     0.00     0.00  Update_Err
+  0.00      8.47     0.00     1019     0.00     0.00  Comp_Vad
+  0.00      8.47     0.00     1019     0.00     0.00  Line_Pack
+  0.00      8.47     0.00     1019     0.00     0.00  Line_Wr
+  0.00      8.47     0.00     1019     0.00     0.00  Lsp_Inq
+  0.00      8.47     0.00     1019     0.00     0.32  Lsp_Qnt
+  0.00      8.47     0.00     1019     0.00     0.00  Read_lbc
+  0.00      8.47     0.00     1019     0.00     0.02  Rem_Dc
+  0.00      8.47     0.00     1019     0.00     0.00  Update_Acf
+  0.00      8.47     0.00        1     0.00     0.00  Init_Coder
+  0.00      8.47     0.00        1     0.00     0.00  Init_Dec_Cng
+  0.00      8.47     0.00        1     0.00     0.00  Init_Decod
+  0.00      8.47     0.00        1     0.00     0.00  Process_Files
+
+ %         the percentage of the total running time of the
+time       program used by this function.
+
+cumulative a running sum of the number of seconds accounted
+ seconds   for by this function and those listed above it.
+
+ self      the number of seconds accounted for by this
+seconds    function alone.  This is the major sort for this
+           listing.
+
+calls      the number of times this function was invoked, if
+           this function is profiled, else blank.
+ 
+ self      the average number of milliseconds spent in this
+ms/call    function per call, if this function is profiled,
+	   else blank.
+
+ total     the average number of milliseconds spent in this
+ms/call    function and its descendents per call, if this 
+	   function is profiled, else blank.
+
+name       the name of the function.  This is the minor sort
+           for this listing. The index shows the location of
+	   the function in the gprof listing. If the index is
+	   in parenthesis it shows where it would appear in
+	   the gprof listing if it were to be printed.
