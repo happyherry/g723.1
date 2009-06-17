@@ -12,12 +12,12 @@
 
 
 /*
-	ITU-T G.723.1 Software Package Release 2 (June 2006)
+  ITU-T G.723.1 Software Package Release 2 (June 2006)
     
-    ITU-T G.723.1 Speech Coder   ANSI-C Source Code     Version 5.2
-    copyright (c) 1995, AudioCodes, DSP Group, France Telecom,
-    Universite de Sherbrooke.  All rights reserved.
-	Last modified : March 2006
+  ITU-T G.723.1 Speech Coder   ANSI-C Source Code     Version 5.2
+  copyright (c) 1995, AudioCodes, DSP Group, France Telecom,
+  Universite de Sherbrooke.  All rights reserved.
+  Last modified : March 2006
 */
 
 #include<unistd.h>
@@ -27,6 +27,9 @@
 #include <time.h>
 #include <sys/time.h>
 
+//begin-----------------------------------add by haiping 2009-06-17
+#define LIMIT 6
+//end  -----------------------------------add by haiping 2009-06-17
 
 #include "../include/g723_const.h"
 #include "../include/lbccodec.h"
@@ -44,15 +47,41 @@ extern void    Line_Wr( char *, FILE * ) ;
 extern int     Line_Rd( char *, FILE * ) ;
 extern void    reset_max_time(void);
 
+//begin-----------------------------------add by haiping 2009-06-17
 
+/* C-callable function to return value of CYCLES register */
+unsigned int cycles() {
+
+    unsigned int ret;
+    __asm__ __volatile__
+        (
+         "%0 = CYCLES;\n\t"
+         : "=&d" (ret)
+         :
+         : "R1"
+         );
+
+    return ret;
+}
+
+struct timeval start[10],finish[10];
+
+float msec[10]={0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0};
+float sum[10]={0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0};
+float mips[10]={0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0};
+
+unsigned int before=0;
+unsigned int temp;
+unsigned int max_diff[10]={0,0,0,0,0,0,0,0,0,0};
+//end ------------------------------------add by haiping 2009-06-17
 /* Global variables */
 enum  Wmode    WrkMode = Both ;
 enum  Crate    WrkRate = Rate63 ;
 
 int   PackedFrameSize[2] = {
-   24 ,
-   20
-   } ;
+    24 ,
+    20
+} ;
 
 Flag    UseHp = True ;
 Flag    UsePf = True ;
@@ -76,6 +105,10 @@ int main( int argc, char *argv[] )
 
     char    Line[24] ;
 
+    //begin ------------------------------------add by haiping 2009-06-17
+    int count = 0;
+    //end   ------------------------------------add by haiping 2009-06-17
+
     printf("%s", SignOn ) ;
 
     /* Process arguments and open I/O files */
@@ -95,78 +128,158 @@ int main( int argc, char *argv[] )
     Init_Dec_Cng( );
 
     /* Process all the input file */
-    do {
+    for(count=0;count<LIMIT;count++)
+        {
+            FrCnt=0;
 
-        switch ( WrkMode ) {
+            do {
+                //begin ---------------------------add by haiping 2009-06-17
+                temp=0;
+                //end  ----------------------------add by haiping 2009-06-17
 
-            case Both:
-                if(Ratp != NULL) {
-                    fread((char *)&Rate_Rd, sizeof(char), 1, Ratp);
-                    WrkRate = (enum Crate)Rate_Rd;
+                switch ( WrkMode ) {
+
+                case Both:
+                    if(Ratp != NULL) {
+                        fread((char *)&Rate_Rd, sizeof(char), 1, Ratp);
+                        WrkRate = (enum Crate)Rate_Rd;
+                    }
+                    if ( WrkRate == Rate53) reset_max_time();
+                    Read_lbc( DataBuff, Frame, Ifp ) ;
+                    Coder( DataBuff, Line ) ;
+                    Decod( DataBuff, Line, (Word16) 0 ) ;
+                    Write_lbc( DataBuff, Frame, Ofp ) ;
+                    break ;
+
+                case Cod :
+                    if(Ratp != NULL) {
+                        fread((char *)&Rate_Rd, sizeof(char), 1, Ratp);
+                        WrkRate = (enum Crate)Rate_Rd;
+                    }
+                    if ( WrkRate == Rate53) reset_max_time();
+                    Read_lbc( DataBuff, Frame, Ifp ) ;
+
+                    //begin ---------------------------add by haiping 2009-06-17               
+                    gettimeofday(&start[count],NULL);
+                    before = cycles();
+                    //end  ----------------------------add by haiping 2009-06-17
+                
+
+                    Coder( DataBuff, Line ) ;
+                    Line_Wr( Line, Ofp ) ;
+               
+                    //begin ---------------------------add by haiping 2009-06-17
+                    temp= cycles() - before;
+                    if (temp>max_diff[count]) max_diff[count]=temp;
+                    gettimeofday(&finish[count],NULL);
+                    //end  ----------------------------add by haiping 2009-06-17
+
+
+                    break ;
+
+                case Dec :
+                    if(Line_Rd( Line, Ifp ) == (-1)) {
+                        FlLen = FrCnt;
+                        break;
+                    }
+                    if ( Fep == NULL )
+                        Crc = (Word16) 0 ;
+                    else
+                        fread( (char *)&Crc, sizeof(Word16), 1, Fep ) ;
+
+                    //begin ---------------------------add by haiping 2009-06-17
+                    gettimeofday(&start[count],NULL);
+                    before = cycles();
+                    //end  ----------------------------add by haiping 2009-06-17
+
+                    Decod( DataBuff, Line, Crc ) ;
+                    Write_lbc( DataBuff, Frame, Ofp ) ;
+                
+                    //begin ---------------------------add by haiping 2009-06-17
+                    temp= cycles() - before;
+                    if (temp>max_diff[count]) max_diff[count]=temp;
+                    gettimeofday(&finish[count],NULL);
+                    //end  ----------------------------add by haiping 2009-06-17
+
+
+                    break ;
                 }
-                if ( WrkRate == Rate53) reset_max_time();
-                Read_lbc( DataBuff, Frame, Ifp ) ;
-                Coder( DataBuff, Line ) ;
-                Decod( DataBuff, Line, (Word16) 0 ) ;
-                Write_lbc( DataBuff, Frame, Ofp ) ;
-            break ;
+        
+                //begin ---------------------------add by haiping 2009-06-17
+                msec[count] =finish[count].tv_sec*1000+finish[count].tv_usec/1000;
+                msec[count]-=(start[count].tv_sec*1000+start[count].tv_usec/1000);//time for a frame;
+                sum[count]+=msec[count];
+                //end  ----------------------------add by haiping 2009-06-17
 
-            case Cod :
-                if(Ratp != NULL) {
-                    fread((char *)&Rate_Rd, sizeof(char), 1, Ratp);
-                    WrkRate = (enum Crate)Rate_Rd;
+                FrCnt ++ ;
+                if( UsePr) {
+                    if( WrkMode == Dec) {
+                        if(FrCnt < FlLen) {
+                            fprintf( stdout, "Done : %6ld\r", FrCnt) ;
+                        }
+                    }
+                    else {
+                        fprintf( stdout, "Done : %6ld %3ld\r", FrCnt, FrCnt*100/FlLen ) ;
+                    }
+                    fflush(stdout);
                 }
-                if ( WrkRate == Rate53) reset_max_time();
-                Read_lbc( DataBuff, Frame, Ifp ) ;
-                Coder( DataBuff, Line ) ;
-                Line_Wr( Line, Ofp ) ;
-            break ;
 
-            case Dec :
-                if(Line_Rd( Line, Ifp ) == (-1)) {
-                    FlLen = FrCnt;
-                    break;
-                }
-                if ( Fep == NULL )
-                    Crc = (Word16) 0 ;
-                else
-                    fread( (char *)&Crc, sizeof(Word16), 1, Fep ) ;
-                Decod( DataBuff, Line, Crc ) ;
-                Write_lbc( DataBuff, Frame, Ofp ) ;
-            break ;
+            }   while ( FrCnt < FlLen ) ;
+
         }
-
-        FrCnt ++ ;
-        if( UsePr) {
-            if( WrkMode == Dec) {
-                if(FrCnt < FlLen) {
-                    fprintf( stdout, "Done : %6ld\r", FrCnt) ;
-                }
-            }
-            else {
-                fprintf( stdout, "Done : %6ld %3ld\r", FrCnt, FrCnt*100/FlLen ) ;
-            }
-            fflush(stdout);
-        }
-
-    }   while ( FrCnt < FlLen ) ;
+    printf("\n");
 
     if(Ifp) { (void)fclose(Ifp); }
     if(Ofp) { (void)fclose(Ofp); }
     if(Fep) { (void)fclose(Fep); }
     if(Ratp) { (void)fclose(Ratp); }
+    
+    //begin ---------------------------add by haiping 2009-06-17
+
+    //consume time
+    printf("\nCode or Decode  %ld frame consumed milliseconds is :\n",FrCnt);
+
+    for(count=0;count<LIMIT;count++)
+        {
+            printf("sum[%d] = %f milliseconds \n",count,sum[count]);
+        }
+
+    printf("\nCode or Decode a frame consumed milliseconds is: \n");
+
+    for(count=0;count<LIMIT;count++)
+        {
+            printf("sum[%d]/FrCnt = %f milliseconds \n",count,sum[count]/FrCnt);
+        }
+
+    //mips
+
+    //av_mips = (float)(max_diff/1)*((1000/30)/1E6);简化如下：
+    float mips_sum=0.0;
+
+    printf("=======MIPS PER CYCLE=======\n");
+    for(count=0;count<LIMIT;count++)
+        {
+            mips[count] = (float)(max_diff[count]/30000);
+            mips_sum += mips[count];
+            printf("cycles = %d MIPS = %5.2f\n",max_diff[count],mips[count]);
+        }
+    printf("=======average MIPS=========\n");
+    printf("av_mips = %5.2f\n",mips_sum/LIMIT);
+
+    //end  ----------------------------add by haiping 2009-06-17
+
     return 0 ;
 }
 
 
 /*
-   This function processes the argument parameters. The function
-      opens the IO files, and sets the global arguments accordingly
-      to the command line parameters.
+  This function processes the argument parameters. The function
+  opens the IO files, and sets the global arguments accordingly
+  to the command line parameters.
 */
 
 long  Process_Files( FILE **Ifp, FILE **Ofp, FILE **Fep, FILE **Ratp,
-                                        int Argc, char *Argv[] )
+                     int Argc, char *Argv[] )
 {
     int     i ;
     long    Flen ;
