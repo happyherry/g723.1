@@ -2,11 +2,14 @@
 #
 # Top level Makefile that builds all libraries and test programs
 #FDPIC_CC = bfin-linux-uclibc-gcc
-#FLAT_CC = bfin-uclinux-gcc
-FLAT_CC = gcc
+
+#FLAT_CC = gcc
+FLAT_CC = bfin-uclinux-gcc
 
 G723_CFLAGS += -I ../include/ -Wall
-FLAT_LDFLAGS += -pipe -Wall -g -O2 # -Wl,-elf2flt=-s100000 -mcpu=bf533-0.5 -g -DEMBED 
+
+#FLAT_LDFLAGS += -pipe -Wall -g -O2
+FLAT_LDFLAGS += -pipe -Wall -O2 -Wl,-elf2flt=-s100000 -mcpu=bf533-0.5 -g -DEMBED 
 
 PROGS := lbccodec tvcmp
 

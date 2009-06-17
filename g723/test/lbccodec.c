@@ -20,8 +20,8 @@
 	Last modified : March 2006
 */
 
-#include <unistd.h>
-#include <stdio.h>
+#include<unistd.h>
+#include<stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>

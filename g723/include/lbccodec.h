@@ -16,7 +16,6 @@
 */
 
 
-long  Process_Files( FILE **Ifp, FILE **Ofp, FILE **Fep, FILE **Ratp,
-                                        int Argc, char *Argv[] );
+long  Process_Files( FILE **Ifp, FILE **Ofp, FILE **Fep, FILE **Ratp,int Argc, char *Argv[] );
 
 

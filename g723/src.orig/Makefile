@@ -1,11 +1,12 @@
-#CROSS := bfin-uclinux-
-CROSS :=
+#CROSS :=
+CROSS := bfin-uclinux-
 
 CC = $(CROSS)gcc
 AS = $(CC)
 AR = $(CROSS)ar
 
-CFLAGS   = -Wall -pg -g -O2
+#CFLAGS   = -Wall -pg -g -O2
+CFLAGS   = -pipe -Wall -g -O2 -mcpu=bf533-0.5 -g -DEMBED
 ARFLAGS  := rc
 
 
