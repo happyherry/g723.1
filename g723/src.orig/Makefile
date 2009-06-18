@@ -6,8 +6,7 @@ AS = $(CC)
 AR = $(CROSS)ar
 
 #CFLAGS   = -Wall -pg -g -O2
-#CFLAGS   = -pipe -Wall -g -O2 -mcpu=bf533-0.5 -DEMBED
-CFLAGS   = -pipe -Wall -g
+CFLAGS   = -pipe -Wall -g -O2 -mcpu=bf533-0.5 -DEMBED
 
 ARFLAGS  := rc
 

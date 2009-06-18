@@ -9,8 +9,7 @@ FLAT_CC = bfin-uclinux-gcc
 G723_CFLAGS += -I ../include/ -Wall
 
 #FLAT_LDFLAGS += -pipe -Wall -g -O2
-#FLAT_LDFLAGS += -pipe -Wall -O2 -Wl,-elf2flt=-s100000 -mcpu=bf533-0.5 -g -DEMBED 
-FLAT_LDFLAGS += -pipe -Wall -Wl,-elf2flt=-s100000
+FLAT_LDFLAGS += -pipe -Wall -O2 -Wl,-elf2flt=-s100000 -mcpu=bf533-0.5 -g -DEMBED 
 
 
 PROGS := lbccodec tvcmp
