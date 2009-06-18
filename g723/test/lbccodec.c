@@ -28,7 +28,7 @@
 #include <sys/time.h>
 
 //begin-----------------------------------add by haiping 2009-06-17
-#define LIMIT 6
+#define LIMIT 2
 //end  -----------------------------------add by haiping 2009-06-17
 
 #include "../include/g723_const.h"
@@ -111,26 +111,28 @@ int main( int argc, char *argv[] )
 
     printf("%s", SignOn ) ;
 
-    /* Process arguments and open I/O files */
-    FlLen = Process_Files( &Ifp, &Ofp, &Fep, &Ratp, argc, argv ) ;
-
-    /*
-      Init coder and the decoder
-    */
-    Init_Coder( ) ;
-    Init_Decod( ) ;
-
-    /* Init Comfort Noise Functions */
-    if( UseVx ) {
-        Init_Vad();
-        Init_Cod_Cng( );
-    }
-    Init_Dec_Cng( );
-
     /* Process all the input file */
+    //begin for(;;) ----------------------------add by haiping 2009-06-17
     for(count=0;count<LIMIT;count++)
         {
-            FrCnt=0;
+            /* Process arguments and open I/O files */
+            FlLen = Process_Files( &Ifp, &Ofp, &Fep, &Ratp, argc, argv ) ;
+            printf("$$$$$$$-----FlLen = %ld-----$$$$$$$$ \n",FlLen);
+            /*
+              Init coder and the decoder
+            */
+            Init_Coder( ) ;
+            Init_Decod( ) ;
+
+            /* Init Comfort Noise Functions */
+            if( UseVx ) {
+                Init_Vad();
+                Init_Cod_Cng( );
+            }
+            Init_Dec_Cng( );
+
+            FrCnt = 0;
+            //end   ------------------------------------add by haiping 2009-06-17
 
             do {
                 //begin ---------------------------add by haiping 2009-06-17
@@ -219,20 +221,21 @@ int main( int argc, char *argv[] )
                         }
                     }
                     else {
-                        fprintf( stdout, "Done : %6ld %3ld\r", FrCnt, FrCnt*100/FlLen ) ;
+                        fprintf( stdout, "Done : %6ld %3ld ％\r", FrCnt, FrCnt*100/FlLen ) ;
                     }
                     fflush(stdout);
                 }
 
-            }   while ( FrCnt < FlLen ) ;
-
+            } while(FrCnt < FlLen) ;
+            //begin ---------------------------------add by haiping 2009-06-17
+            
+            if(Ifp) { (void)fclose(Ifp); }
+            if(Ofp) { (void)fclose(Ofp); }
+            if(Fep) { (void)fclose(Fep); }
+            if(Ratp) { (void)fclose(Ratp); }
         }
     printf("\n");
-
-    if(Ifp) { (void)fclose(Ifp); }
-    if(Ofp) { (void)fclose(Ofp); }
-    if(Fep) { (void)fclose(Fep); }
-    if(Ratp) { (void)fclose(Ratp); }
+    //end for(;;) ---------------------------add by haiping 2009-06-17
     
     //begin ---------------------------add by haiping 2009-06-17
 
