@@ -11,11 +11,11 @@
 **
 */
 /*
-	ITU-T G.723.1 Software Package Release 2 (June 2006)
+  ITU-T G.723.1 Software Package Release 2 (June 2006)
     
-	ITU-T G.723.1 Speech Coder   ANSI-C Source Code     Version 5.00
-    copyright (c) 1995, AudioCodes, DSP Group, France Telecom,
-    Universite de Sherbrooke.  All rights reserved.
+  ITU-T G.723.1 Speech Coder   ANSI-C Source Code     Version 5.00
+  copyright (c) 1995, AudioCodes, DSP Group, France Telecom,
+  Universite de Sherbrooke.  All rights reserved.
 */
 
 
@@ -25,8 +25,16 @@
 
 #include "../include/g723_const.h"
 /*
-   This file includes the coder main functions
+  This file includes the coder main functions
 */
+
+//begain -----------------------------------add by haiping 2009-06-19
+#ifdef TEST_MIPS
+extern unsigned int cycles();
+extern unsigned int test_start;
+extern float mips_test[TESTMIPSNUM];
+#endif//TEST_MIPS
+//end    -----------------------------------add by haiping 2009-06-19
 
 CODSTATDEF  CodStat  ;
 extern Word16   LspDcTable[LpcOrder] ;
@@ -121,6 +129,10 @@ Flag  Coder( Word16 *DataBuff, char *Vout )
 {
     int     i,j   ;
 
+#ifdef TEST_MIPS
+    unsigned int test_temp=0;
+#endif//TEST_MIPS
+
     /*
       Local variables
     */
@@ -143,53 +155,195 @@ Flag  Coder( Word16 *DataBuff, char *Vout )
     */
     Line.Crc = (Word16) 0 ;
 
+    //High-pass filtering
+    //------------------------------------------------------------(1)
+#ifdef TEST_MIPS
+    test_temp=0;
+    test_start=cycles();
+#endif//TEST_MIPS
+
     Rem_Dc( DataBuff ) ;
 
+#ifdef TEST_MIPS
+    test_temp=cycles()-test_start;
+    if(test_temp>mips_test[1])mips_test[1]=test_temp;
+#endif//TEST_MIPS
+
     /* Compute the Unquantized Lpc set for whole frame */
+    //------------------------------------------------------------(2)
+#ifdef TEST_MIPS
+    test_temp=0;
+    test_start=cycles();
+#endif//TEST_MIPS
+
     Comp_Lpc( UnqLpc, CodStat.PrevDat, DataBuff ) ;
 
+#ifdef TEST_MIPS
+    test_temp=cycles()-test_start;
+    if(test_temp>mips_test[2])mips_test[2]=test_temp;
+#endif//TEST_MIPS
+
     /* Convert to Lsp */
+    //------------------------------------------------------------(3)
+#ifdef TEST_MIPS
+    test_temp=0;
+    test_start=cycles();
+#endif//TEST_MIPS
+
     AtoLsp( LspVect, &UnqLpc[LpcOrder*(SubFrames-1)], CodStat.PrevLsp ) ;
 
+#ifdef TEST_MIPS
+    test_temp=cycles()-test_start;
+    if(test_temp>mips_test[3])mips_test[3]=test_temp;
+#endif//TEST_MIPS
+
     /* Compute the Vad */
+/* Convert to Lsp */
+    //------------------------------------------------------------(4)
+#ifdef TEST_MIPS
+    test_temp=0;
+    test_start=cycles();
+#endif//TEST_MIPS
+
     Ftyp = (Word16) Comp_Vad( DataBuff ) ;
 
+#ifdef TEST_MIPS
+    test_temp=cycles()-test_start;
+    if(test_temp>mips_test[4])mips_test[4]=test_temp;
+#endif//TEST_MIPS
+
     /* VQ Lsp vector */
+  //------------------------------------------------------------(5)
+#ifdef TEST_MIPS
+    test_temp=0;
+    test_start=cycles();
+#endif//TEST_MIPS
+
     Line.LspId = Lsp_Qnt( LspVect, CodStat.PrevLsp ) ;
+
+#ifdef TEST_MIPS
+    test_temp=cycles()-test_start;
+    if(test_temp>mips_test[5])mips_test[5]=test_temp;
+#endif//TEST_MIPS
+
+  //------------------------------------------------------------(6)
+#ifdef TEST_MIPS
+    test_temp=0;
+    test_start=cycles();
+#endif//TEST_MIPS
 
     Mem_Shift( CodStat.PrevDat, DataBuff ) ;
 
+#ifdef TEST_MIPS
+    test_temp=cycles()-test_start;
+    if(test_temp>mips_test[6])mips_test[6]=test_temp;
+#endif//TEST_MIPS
+
     /* Compute Perceptual filter Lpc coefficients */
-    Wght_Lpc( PerLpc, UnqLpc ) ;
+  //------------------------------------------------------------(7)
+#ifdef TEST_MIPS
+    test_temp=0;
+    test_start=cycles();
+#endif//TEST_MIPS
+
+    Wght_Lpc( PerLpc, UnqLpc ) 
+;
+#ifdef TEST_MIPS
+    test_temp=cycles()-test_start;
+    if(test_temp>mips_test[7])mips_test[7]=test_temp;
+#endif//TEST_MIPS
 
     /* Apply the perceptual weighting filter */
+  //------------------------------------------------------------(8)
+#ifdef TEST_MIPS
+    test_temp=0;
+    test_start=cycles();
+#endif//TEST_MIPS
+
     Error_Wght( DataBuff, PerLpc ) ;
+
+#ifdef TEST_MIPS
+    test_temp=cycles()-test_start;
+    if(test_temp>mips_test[8])mips_test[8]=test_temp;
+#endif//TEST_MIPS
 
     /*
     // Compute Open loop pitch estimates
     */
+  //------------------------------------------------------------(9)
+#ifdef TEST_MIPS
+    test_temp=0;
+    test_start=cycles();
+#endif//TEST_MIPS
+
     Dpnt = (Word16 *) malloc( sizeof(Word16)*(PitchMax+Frame) ) ;
 
+#ifdef TEST_MIPS
+    test_temp=cycles()-test_start;
+    if(test_temp>mips_test[9])mips_test[9]=test_temp;
+#endif//TEST_MIPS
+
     /* Construct the buffer */
+  //------------------------------------------------------------(10)
+#ifdef TEST_MIPS
+    test_temp=0;
+    test_start=cycles();
+#endif//TEST_MIPS
+
     for ( i = 0 ; i < PitchMax ; i ++ )
         Dpnt[i] = CodStat.PrevWgt[i] ;
     for ( i = 0 ; i < Frame ; i ++ )
         Dpnt[PitchMax+i] = DataBuff[i] ;
 
+#ifdef TEST_MIPS
+    test_temp=cycles()-test_start;
+    if(test_temp>mips_test[10])mips_test[10]=test_temp;
+#endif//TEST_MIPS
+
+  //------------------------------------------------------------(11)
+#ifdef TEST_MIPS
+    test_temp=0;
+    test_start=cycles();
+#endif//TEST_MIPS
+
     Vec_Norm( Dpnt, (Word16) (PitchMax+Frame) ) ;
 
+#ifdef TEST_MIPS
+    test_temp=cycles()-test_start;
+    if(test_temp>mips_test[11])mips_test[11]=test_temp;
+#endif//TEST_MIPS
+
     j = PitchMax ;
+
+  //------------------------------------------------------------(12)
+#ifdef TEST_MIPS
+    test_temp=0;
+    test_start=cycles();
+#endif//TEST_MIPS
+
     for ( i = 0 ; i < SubFrames/2 ; i ++ ) {
         Line.Olp[i] = Estim_Pitch( Dpnt, (Word16) j ) ;
         VadStat.Polp[i+2] = Line.Olp[i] ;
         j += 2*SubFrLen ;
     }
 
+#ifdef TEST_MIPS
+    test_temp=cycles()-test_start;
+    if(test_temp>mips_test[12])mips_test[12]=test_temp;
+#endif//TEST_MIPS
+
     if(Ftyp != 1) {
 
         /*
         // Case of inactive signal
         */
+
+  //------------------------------------------------------------(13)
+#ifdef TEST_MIPS
+        test_temp=0;
+        test_start=cycles();
+#endif//TEST_MIPS
+
         free ( (char *) Dpnt ) ;
 
         /* Save PrevWgt */
@@ -208,10 +362,15 @@ Flag  Coder( Word16 *DataBuff, char *Vout )
             /* Update exc_err */
             Update_Err(Line.Olp[i>>1], Line.Sfs[i].AcLg, Line.Sfs[i].AcGn);
 
-            Upd_Ring( Dpnt, &QntLpc[i*LpcOrder], &PerLpc[i*2*LpcOrder],
-                                                        CodStat.PrevErr ) ;
+            Upd_Ring( Dpnt, &QntLpc[i*LpcOrder], &PerLpc[i*2*LpcOrder], CodStat.PrevErr ) ;
             Dpnt += SubFrLen;
         }
+
+#ifdef TEST_MIPS
+        test_temp=cycles()-test_start;
+        if(test_temp>mips_test[13])mips_test[13]=test_temp;
+#endif//TEST_MIPS
+
     }
 
     else {
@@ -219,8 +378,12 @@ Flag  Coder( Word16 *DataBuff, char *Vout )
         /*
         // Case of Active signal  (Ftyp=1)
         */
-
         /* Compute the Hmw */
+  //------------------------------------------------------------(14)
+#ifdef TEST_MIPS
+        test_start=cycles();
+#endif//TEST_MIPS
+
         j = PitchMax ;
         for ( i = 0 ; i < SubFrames ; i ++ ) {
             Pw[i] = Comp_Pw( Dpnt, (Word16) j, Line.Olp[i>>1] ) ;
@@ -255,6 +418,11 @@ Flag  Coder( Word16 *DataBuff, char *Vout )
         for ( i = 0 ; i < LpcOrder ; i ++ )
             CodStat.PrevLsp[i] = LspVect[i] ;
 
+#ifdef TEST_MIPS
+        test_temp=cycles()-test_start;
+        if(test_temp>mips_test[14])mips_test[14]=test_temp;
+#endif//TEST_MIPS
+
         /*
         // Start the sub frame processing loop
         */
@@ -263,22 +431,82 @@ Flag  Coder( Word16 *DataBuff, char *Vout )
         for ( i = 0 ; i < SubFrames ; i ++ ) {
 
             /* Compute full impulse response */
-            Comp_Ir( ImpResp, &QntLpc[i*LpcOrder],
-                                            &PerLpc[i*2*LpcOrder], Pw[i] ) ;
+  //------------------------------------------------------------(15)
+#ifdef TEST_MIPS
+            test_temp=0;
+            test_start=cycles();
+#endif//TEST_MIPS
+
+            Comp_Ir( ImpResp, &QntLpc[i*LpcOrder],&PerLpc[i*2*LpcOrder], Pw[i] ) ;
+
+#ifdef TEST_MIPS
+            test_temp=cycles()-test_start;
+            if(test_temp>mips_test[15])mips_test[15]=test_temp;
+#endif//TEST_MIPS
 
             /* Subtract the ringing of previous sub-frame */
-            Sub_Ring( Dpnt, &QntLpc[i*LpcOrder], &PerLpc[i*2*LpcOrder],
-                                                   CodStat.PrevErr, Pw[i] ) ;
+
+  //------------------------------------------------------------(16)
+#ifdef TEST_MIPS
+            test_temp=0;
+            test_start=cycles();
+#endif//TEST_MIPS
+
+            Sub_Ring( Dpnt, &QntLpc[i*LpcOrder], &PerLpc[i*2*LpcOrder], CodStat.PrevErr, Pw[i] ) ;
+
+#ifdef TEST_MIPS
+            test_temp=cycles()-test_start;
+            if(test_temp>mips_test[16])mips_test[16]=test_temp;
+#endif//TEST_MIPS
 
             /* Compute adaptive code book contribution */
+
+  //------------------------------------------------------------(17)
+#ifdef TEST_MIPS
+            test_temp=0;
+            test_start=cycles();
+#endif//TEST_MIPS
+
             Find_Acbk( Dpnt, ImpResp, CodStat.PrevExc, &Line, (Word16) i ) ;
 
+#ifdef TEST_MIPS
+            test_temp=cycles()-test_start;
+            if(test_temp>mips_test[17])mips_test[17]=test_temp;
+#endif//TEST_MIPS
+
             /* Compute fixed code book contribution */
+  //------------------------------------------------------------(18)
+#ifdef TEST_MIPS
+            test_temp=0;
+            test_start=cycles();
+#endif//TEST_MIPS
+
             Find_Fcbk( Dpnt, ImpResp, &Line, (Word16) i ) ;
 
+#ifdef TEST_MIPS
+            test_temp=cycles()-test_start;
+            if(test_temp>mips_test[18])mips_test[18]=test_temp;
+#endif//TEST_MIPS
+
             /* Reconstruct the excitation */
-            Decod_Acbk( ImpResp, CodStat.PrevExc, Line.Olp[i>>1],
-                                    Line.Sfs[i].AcLg, Line.Sfs[i].AcGn ) ;
+  //------------------------------------------------------------(19)
+#ifdef TEST_MIPS
+            test_temp=0;
+            test_start=cycles();
+#endif//TEST_MIPS
+
+            Decod_Acbk( ImpResp, CodStat.PrevExc, Line.Olp[i>>1],Line.Sfs[i].AcLg, Line.Sfs[i].AcGn ) ;
+
+#ifdef TEST_MIPS
+            test_temp=cycles()-test_start;
+            if(test_temp>mips_test[19])mips_test[19]=test_temp;
+#endif//TEST_MIPS
+
+  //------------------------------------------------------------(20)
+#ifdef TEST_MIPS
+            test_temp=0;
+            test_start=cycles();
+#endif//TEST_MIPS
 
             for ( j = SubFrLen ; j < PitchMax ; j ++ )
                 CodStat.PrevExc[j-SubFrLen] = CodStat.PrevExc[j] ;
@@ -289,12 +517,40 @@ Flag  Coder( Word16 *DataBuff, char *Vout )
                 CodStat.PrevExc[PitchMax-SubFrLen+j] = Dpnt[j] ;
             }
 
+#ifdef TEST_MIPS
+            test_temp=cycles()-test_start;
+            if(test_temp>mips_test[20])mips_test[20]=test_temp;
+#endif//TEST_MIPS
+
+
             /* Update exc_err */
+  //------------------------------------------------------------(21)
+#ifdef TEST_MIPS
+            test_temp=0;
+            test_start=cycles();
+#endif//TEST_MIPS
+
             Update_Err(Line.Olp[i>>1], Line.Sfs[i].AcLg, Line.Sfs[i].AcGn);
 
+#ifdef TEST_MIPS
+            test_temp=cycles()-test_start;
+            if(test_temp>mips_test[21])mips_test[21]=test_temp;
+#endif//TEST_MIPS
+
             /* Update the ringing delays */
-            Upd_Ring( Dpnt, &QntLpc[i*LpcOrder], &PerLpc[i*2*LpcOrder],
-                                                       CodStat.PrevErr ) ;
+
+  //------------------------------------------------------------(22)
+#ifdef TEST_MIPS
+            test_temp=0;
+            test_start=cycles();
+#endif//TEST_MIPS
+
+            Upd_Ring( Dpnt, &QntLpc[i*LpcOrder], &PerLpc[i*2*LpcOrder],CodStat.PrevErr ) ;
+
+#ifdef TEST_MIPS
+            test_temp=cycles()-test_start;
+            if(test_temp>mips_test[22])mips_test[22]=test_temp;
+#endif//TEST_MIPS
 
             Dpnt += SubFrLen ;
         }  /* end of subframes loop */
@@ -307,8 +563,20 @@ Flag  Coder( Word16 *DataBuff, char *Vout )
 
     } /* End of active frame case */
 
+
     /* Pack the Line structure */
+  //------------------------------------------------------------(23)
+#ifdef TEST_MIPS
+    test_temp=0;
+    test_start=cycles();
+#endif//TEST_MIPS
+
     Line_Pack( &Line, Vout, Ftyp ) ;
+
+#ifdef TEST_MIPS
+    test_temp=cycles()-test_start;
+    if(test_temp>mips_test[23])mips_test[23]=test_temp;
+#endif//TEST_MIPS
 
     return (Flag) True ;
 }

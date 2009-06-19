@@ -35,8 +35,11 @@ typedef int   Word32;
 typedef int   Flag;
 #endif
 
+//begain -----------------------------------add by haiping 2009-06-19
 #define TEST_MIPS
 #define TESTMIPSNUM 25
+//end    -----------------------------------add by haiping 2009-06-19
+
 /*
 #define L_mult __builtin_bfin_mult_fr1x32
 #define L_add __builtin_bfin_add_fr1x32

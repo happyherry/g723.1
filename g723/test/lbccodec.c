@@ -28,7 +28,7 @@
 #include <sys/time.h>
 
 //begin-----------------------------------add by haiping 2009-06-17
-#define LIMIT 2
+#define LIMIT 1
 //end  -----------------------------------add by haiping 2009-06-17
 
 #include "../include/g723_const.h"
@@ -46,6 +46,7 @@ extern void    Read_lbc( Word16 *Dpnt, int Len, FILE *Fp );
 extern void    Line_Wr( char *, FILE * ) ;
 extern int     Line_Rd( char *, FILE * ) ;
 extern void    reset_max_time(void);
+
 
 //begin-----------------------------------add by haiping 2009-06-17
 
@@ -66,13 +67,22 @@ unsigned int cycles() {
 
 struct timeval start[10],finish[10];
 
-float msec[10]={0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0};
-float sum[10]={0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0};
-float mips[10]={0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0};
+float msec[10];
+float sum[10];
+float mips[10];
 
 unsigned int before=0;
 unsigned int temp;
-unsigned int max_diff[10]={0,0,0,0,0,0,0,0,0,0};
+unsigned int max_diff[10];
+
+/*
+  MIPS TEST CODES
+*/
+#ifdef TEST_MIPS
+float mips_test[TESTMIPSNUM]={0.0};
+unsigned int test_start=0;
+#endif//TEST_MIPS
+
 //end ------------------------------------add by haiping 2009-06-17
 /* Global variables */
 enum  Wmode    WrkMode = Both ;
@@ -107,6 +117,9 @@ int main( int argc, char *argv[] )
 
     //begin ------------------------------------add by haiping 2009-06-17
     int count = 0;
+    memset(msec,0,sizeof(float)*10);
+    memset(sum,0,sizeof(float)*10);
+    memset(mips,0,sizeof(float)*10);
     //end   ------------------------------------add by haiping 2009-06-17
 
     printf("%s", SignOn ) ;
@@ -268,6 +281,23 @@ int main( int argc, char *argv[] )
         }
     printf("=======average MIPS=========\n");
     printf("av_mips = %5.2f\n",mips_sum/LIMIT);
+
+#ifdef TEST_MIPS
+    mips_test[0]=mips_sum/LIMIT;
+    if(WrkMode==Cod)
+        {
+            printf("==========PRINT TEST MIPS==========\n");
+            printf("coder  MIPS:mips_test[0] = %5.2f\n",mips_test[0]);
+
+            int testcount;
+
+            for(testcount=1;testcount<=TESTMIPSNUM-1;testcount++)
+                {
+                    printf("MIPS TEST:mips_test[%d] = %5.2f\n",testcount,mips_test[testcount]/30000);
+                }
+        }
+#endif//TEST_MIPS
+
 
     //end  ----------------------------add by haiping 2009-06-17
 
