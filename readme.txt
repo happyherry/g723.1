@@ -5,13 +5,6 @@ g723.1(2006:5.2)
 2008-12-23 
 2009-04-14
 2009-06-14
-2009-06-14:21:26
-just to test git stash;
-1)stash 21:38
-2)stash 21:40
-doc  
-------------
-3)test time
 Makefile  
 include ---
           |g723_const.h
@@ -52,6 +45,3 @@ src.orig---
           -
           |util_lbc.c
 
-
-
-hello! i am here.
